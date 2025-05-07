@@ -10,17 +10,19 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepository : GenericRepository<User>, IUserRepository
+    public class CommentRepository : GenericRepository<Comment>, ICommentRepository
     {
         private readonly AppDbContext _context;
-        public UserRepository(AppDbContext context) : base(context)
+        public CommentRepository(AppDbContext context) : base(context)
         {
             _context = context;
         }
-        public async Task<List<User>> SearchUsersAsync(string query, Guid excludeUserId)
+        public async Task<List<Comment>> GetCommentsWithUserAsync(Guid postId)
         {
-            return await _context.Users
-                .Where(u => (u.Username.Contains(query) || u.Email.Contains(query)) && u.Id != excludeUserId)
+            return await _context.Comments
+                .Include(c => c.User)
+                .Where(c => c.PostId == postId)
+                .OrderByDescending(c => c.CreatedAt)
                 .ToListAsync();
         }
     }

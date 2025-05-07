@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IPostRepository : IRepository<Post>
     {
-        Task<List<User>> SearchUsersAsync(string query, Guid excludeUserId);
+        Task<List<Post>> GetAllWithUsersAsync();
+        Task<Post?> GetByIdWithUserAsync(Guid postId);
     }
 }

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface IUserRepository : IRepository<User>
+    public interface ICommentRepository : IRepository<Comment>
     {
-        Task<List<User>> SearchUsersAsync(string query, Guid excludeUserId);
+        Task<List<Comment>> GetCommentsWithUserAsync(Guid postId);
     }
 }

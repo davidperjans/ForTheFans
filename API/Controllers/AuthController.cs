@@ -41,17 +41,5 @@ namespace API.Controllers
 
             return Ok(result);
         }
-
-        [Authorize]
-        [HttpGet("profile")]
-        public IActionResult GetProfile()
-        {
-            var user = User.Identity?.Name;
-
-            if (user == null)
-                return Unauthorized();
-
-            return Ok(new { Username = user });
-        }
     }
 }

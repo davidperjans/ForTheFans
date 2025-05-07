@@ -1,4 +1,9 @@
-﻿using Application.Features.UserFeatures.Queries.SearchUsers;
+﻿using Application.DTOs;
+using Application.Features.UserFeatures.Commands;
+using Application.Features.UserFeatures.Commands.ChangePassword;
+using Application.Features.UserFeatures.Commands.UpdateUserProfile;
+using Application.Features.UserFeatures.Queries.GetCurrentUser;
+using Application.Features.UserFeatures.Queries.SearchUsers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +31,51 @@ namespace API.Controllers
                 return Unauthorized();
 
             var result = await _mediator.Send(new SearchUsersQuery(query, currentUserId));
+
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpPatch("profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserProfileDto dto)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(userId, out var currentUserId))
+                return Unauthorized();
+
+            var result = await _mediator.Send(new UpdateUserProfileCommand(currentUserId, dto));
+
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(userId, out var currentUserId))
+                return Unauthorized();
+
+            var result = await _mediator.Send(new ChangePasswordCommand(currentUserId, dto));
+
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(userId, out var currentUserId))
+                return Unauthorized();
+
+            var result = await _mediator.Send(new GetCurrentUserQuery(currentUserId));
 
             if (!result.IsSuccess)
                 return BadRequest(result);
