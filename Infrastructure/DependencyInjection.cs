@@ -44,6 +44,7 @@ namespace Infrastructure
             });
 
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IFriendRepository, FriendRepository>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             return services;
