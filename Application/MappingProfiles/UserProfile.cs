@@ -16,7 +16,9 @@ namespace Application.MappingProfiles
             CreateMap<User, UserDto>();
             CreateMap<User, FriendDto>();
             CreateMap<FriendRequest, ReceivedFriendRequestDto>()
-                .ForMember(dest => dest.FromUsername, opt => opt.MapFrom(src => src.FromUser.Username));
+                .ForMember(dest => dest.FromUsername, opt => opt.MapFrom(src => src.FromUser.Username))
+                .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<User, UserInfoDto>();
         }
     }
 }
