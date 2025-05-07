@@ -12,10 +12,11 @@ namespace Domain.Entities
         public string Username { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
-        public string FavoriteTeam { get; set; }
-        public bool IsPrivate { get; set; }
+        public string? FavoriteTeam { get; set; }
+        public bool? IsPrivate { get; set; }
+        public string? ProfilePictureUrl { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         // Navigeringsproperties
         public ICollection<Post> Posts { get; set; } = new List<Post>();
