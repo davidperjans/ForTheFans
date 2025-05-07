@@ -19,6 +19,7 @@ namespace Application.MappingProfiles
                 .ForMember(dest => dest.FromUsername, opt => opt.MapFrom(src => src.FromUser.Username))
                 .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.Id));
             CreateMap<User, UserInfoDto>();
+            CreateMap<User, MeDto>();
         }
     }
 }

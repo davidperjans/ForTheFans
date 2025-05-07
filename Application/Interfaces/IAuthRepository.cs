@@ -13,5 +13,6 @@ namespace Application.Interfaces
         Task<bool> EmailExistsAsync(string email);
         Task AddUserAsync(User user);
         Task<User?> GetUserByEmailAsync(string email);
+        Task<bool> UsernameExistsAsync(string username);
     }
 }

@@ -43,8 +43,11 @@ namespace Infrastructure
                 };
             });
 
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IFriendRepository, FriendRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
 
