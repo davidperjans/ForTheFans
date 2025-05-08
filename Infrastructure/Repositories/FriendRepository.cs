@@ -70,12 +70,14 @@ namespace Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<FriendRequest>> GetPendingFriendRequestsAsync(Guid userId)
+        public async Task<List<FriendRequest>> GetRelevantFriendRequestsAsync(Guid userId)
         {
             return await _context.FriendRequests
-            .Where(fr => fr.ToUserId == userId && fr.Status == RequestStatus.Pending)
-            .Include(fr => fr.FromUser)
-            .ToListAsync();
+                .Where(fr =>
+                    (fr.ToUserId == userId || fr.FromUserId == userId) &&
+                    fr.Status == RequestStatus.Pending)
+                .Include(fr => fr.FromUser)
+                .ToListAsync();
         }
 
         public async Task<bool> AreUsersAlreadyFriendsAsync(Guid user1Id, Guid user2Id)
