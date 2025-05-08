@@ -41,6 +41,16 @@ namespace API
 
             builder.Services.AddApplicationServices().AddInfrastructureServices(builder.Configuration);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    policy => policy
+                        .WithOrigins("http://localhost:5173") // My Frontend
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials());
+            });
+
             var app = builder.Build();
 
             app.UseMiddleware<ExceptionMiddleware>();
@@ -57,6 +67,7 @@ namespace API
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseCors("AllowFrontend");
 
             app.MapControllers();
 
