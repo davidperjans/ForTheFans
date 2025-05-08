@@ -13,6 +13,12 @@ namespace Application.Features.UserFeatures.Commands.UpdateUserProfile
     {
         private readonly IUserRepository _userRepository;
         private readonly IAuthRepository _authRepository;
+        public UpdateUserProfileHandler(IUserRepository userRepository, IAuthRepository authRepository)
+        {
+            _userRepository = userRepository;
+            _authRepository = authRepository;
+        }
+
         public async Task<OperationResult<bool>> Handle(UpdateUserProfileCommand request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdAsync(request.UserId);
@@ -20,6 +26,7 @@ namespace Application.Features.UserFeatures.Commands.UpdateUserProfile
                 return OperationResult<bool>.Failure("User not found");
 
             var dto = request.Dto;
+            bool isModified = false;
 
             // Check if user wants to change email
             if (!string.IsNullOrWhiteSpace(dto.Email) && dto.Email != user.Email)
@@ -30,6 +37,7 @@ namespace Application.Features.UserFeatures.Commands.UpdateUserProfile
                     return OperationResult<bool>.Failure("Email is already in use");
                 
                 user.Email = dto.Email;
+                isModified = true;
             }
 
             // Check if user wants to change username
@@ -41,23 +49,34 @@ namespace Application.Features.UserFeatures.Commands.UpdateUserProfile
                     return OperationResult<bool>.Failure("Username is already in use");
 
                 user.Username = dto.Username;
+                isModified = true;
             }
 
-            // Check if user wants to change favorite team
-            if (dto.FavoriteTeam is not null)
+            if (dto.FavoriteTeam is not null && dto.FavoriteTeam != user.FavoriteTeam)
+            {
                 user.FavoriteTeam = dto.FavoriteTeam;
+                isModified = true;
+            }
 
-            // Check if user wants to change privacy settings
-            if (dto.IsPrivate.HasValue)
+            if (dto.IsPrivate.HasValue && dto.IsPrivate.Value != user.IsPrivate)
+            {
                 user.IsPrivate = dto.IsPrivate.Value;
+                isModified = true;
+            }
 
-            // Check if user wants to change profile picture
-            if (dto.ProfilePictureUrl is not null)
+            if (dto.ProfilePictureUrl is not null && dto.ProfilePictureUrl != user.ProfilePictureUrl)
+            {
                 user.ProfilePictureUrl = dto.ProfilePictureUrl;
+                isModified = true;
+            }
 
-            await _userRepository.UpdateAsync(user);
+            if (isModified)
+            {
+                user.UpdatedAt = DateTime.UtcNow;
+                await _userRepository.UpdateAsync(user);
+            }
 
-            return OperationResult<bool>.Success(true);
+            return OperationResult<bool>.Success(isModified);
         }
     }
 }

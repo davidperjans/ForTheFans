@@ -12,21 +12,23 @@ using System.Threading.Tasks;
 
 namespace Application.Features.AuthFeatures.Commands.RegisterUser
 {
-    public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, OperationResult<UserDto>>
+    public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, OperationResult<AuthResultDto>>
     {
         private readonly IAuthRepository _authRepository;
+        private readonly IJwtTokenService _tokenService;
         private readonly IMapper _mapper;
-        public RegisterUserHandler(IAuthRepository authRepository, IMapper mapper)
+        public RegisterUserHandler(IAuthRepository authRepository, IJwtTokenService tokenService, IMapper mapper)
         {
             _authRepository = authRepository;
+            _tokenService = tokenService;
             _mapper = mapper;
         }
-        public async Task<OperationResult<UserDto>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResult<AuthResultDto>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var dto = request.Dto;
 
             if (await _authRepository.EmailExistsAsync(dto.Email))
-                return OperationResult<UserDto>.Failure("Email already exists");
+                return OperationResult<AuthResultDto>.Failure("Email already exists");
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
@@ -41,8 +43,15 @@ namespace Application.Features.AuthFeatures.Commands.RegisterUser
 
             await _authRepository.AddUserAsync(newUser);
 
-            var resultDto = _mapper.Map<UserDto>(newUser);
-            return OperationResult<UserDto>.Success(resultDto);
+            var token = _tokenService.GenerateJwtToken(newUser);
+
+            var authResult = new AuthResultDto
+            {
+                Token = token,
+                Username = newUser.Username
+            };
+
+            return OperationResult<AuthResultDto>.Success(authResult);
         }
     }
 }

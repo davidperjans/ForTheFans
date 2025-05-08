@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.AuthFeatures.Commands.RegisterUser
 {
-    public class RegisterUserCommand : IRequest<OperationResult<UserDto>>
+    public class RegisterUserCommand : IRequest<OperationResult<AuthResultDto>>
     {
         public RegisterUserDto Dto { get; }
 

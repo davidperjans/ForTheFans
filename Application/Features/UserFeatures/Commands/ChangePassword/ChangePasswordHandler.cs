@@ -31,6 +31,7 @@ namespace Application.Features.UserFeatures.Commands.ChangePassword
             // Hash the new password and save it
             var newPasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
             user.PasswordHash = newPasswordHash;
+            user.UpdatedAt = DateTime.UtcNow;
 
             await _userRepository.UpdateAsync(user);
 
