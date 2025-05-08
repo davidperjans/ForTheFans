@@ -10,5 +10,6 @@ namespace Application.Interfaces
     public interface IUserRepository : IRepository<User>
     {
         Task<List<User>> SearchUsersAsync(string query, Guid excludeUserId);
+        Task<List<User>> GetFriendsOfUserAsync(Guid userId);
     }
 }

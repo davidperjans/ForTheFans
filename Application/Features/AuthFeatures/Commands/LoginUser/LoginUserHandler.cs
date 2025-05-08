@@ -33,8 +33,11 @@ namespace Application.Features.AuthFeatures.Commands.LoginUser
 
             var authResult = new AuthResultDto
             {
-                Token = token,
-                Username = user.Username
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                ProfilePictureUrl = user.ProfilePictureUrl,
+                Token = token
             };
 
             return OperationResult<AuthResultDto>.Success(authResult);
