@@ -27,7 +27,11 @@ namespace Application.Features.FriendRequestFeatures.Commands.SendFriendRequest
 
             var alreadySent = await _friendRepository.FriendRequestExistsAsync(request.FromUserId, dto.ToUserId);
             if (alreadySent)
-                return OperationResult<bool>.Failure("You have already sent a friend request to this user");
+                return OperationResult<bool>.Failure("A friend request already exists between these users");
+
+            var alreadyFriends = await _friendRepository.AreUsersAlreadyFriendsAsync(request.FromUserId, dto.ToUserId);
+            if (alreadyFriends)
+                return OperationResult<bool>.Failure("You are already friends with this user");
 
             var newRequest = new FriendRequest
             {

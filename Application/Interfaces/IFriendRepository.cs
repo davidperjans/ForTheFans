@@ -17,5 +17,6 @@ namespace Application.Interfaces
         Task<Friendship?> GetFriendshipAsync(Guid userId, Guid friendId);
         Task RemoveFriendshipAsync(Friendship friendship);
         Task<List<FriendRequest>> GetPendingFriendRequestsAsync(Guid userId);
+        Task<bool> AreUsersAlreadyFriendsAsync(Guid user1Id, Guid user2Id);
     }
 }

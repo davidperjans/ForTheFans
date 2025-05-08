@@ -3,6 +3,7 @@ using Application.Features.UserFeatures.Commands;
 using Application.Features.UserFeatures.Commands.ChangePassword;
 using Application.Features.UserFeatures.Commands.UpdateUserProfile;
 using Application.Features.UserFeatures.Queries.GetCurrentUser;
+using Application.Features.UserFeatures.Queries.GetFriendsOfUser;
 using Application.Features.UserFeatures.Queries.SearchUsers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -76,6 +77,18 @@ namespace API.Controllers
                 return Unauthorized();
 
             var result = await _mediator.Send(new GetCurrentUserQuery(currentUserId));
+
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}/friends")]
+        public async Task<IActionResult> GetFriendsOfUser(Guid id)
+        {
+
+            var result = await _mediator.Send(new GetFriendsOfUserQuery(id));
 
             if (!result.IsSuccess)
                 return BadRequest(result);

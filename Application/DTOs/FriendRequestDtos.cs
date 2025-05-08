@@ -19,6 +19,7 @@ namespace Application.DTOs
         public Guid RequestId { get; set; }
         public Guid FromUserId { get; set; }
         public string FromUsername { get; set; }
+        public string? FromProfilePictureUrl { get; set; }
         public DateTime SentAt { get; set; }
     }
 }

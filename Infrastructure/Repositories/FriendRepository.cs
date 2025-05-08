@@ -21,7 +21,9 @@ namespace Infrastructure.Repositories
         public async Task<bool> FriendRequestExistsAsync(Guid fromUserId, Guid toUserId)
         {
             return await _context.FriendRequests.AnyAsync(fr =>
-            fr.FromUserId == fromUserId && fr.ToUserId == toUserId && fr.Status == RequestStatus.Pending);
+                ((fr.FromUserId == fromUserId && fr.ToUserId == toUserId) ||
+                 (fr.FromUserId == toUserId && fr.ToUserId == fromUserId)) &&
+                fr.Status == RequestStatus.Pending);
         }
         public async Task AddFriendRequestAsync(FriendRequest friendRequest)
         {
@@ -74,6 +76,13 @@ namespace Infrastructure.Repositories
             .Where(fr => fr.ToUserId == userId && fr.Status == RequestStatus.Pending)
             .Include(fr => fr.FromUser)
             .ToListAsync();
+        }
+
+        public async Task<bool> AreUsersAlreadyFriendsAsync(Guid user1Id, Guid user2Id)
+        {
+            return await _context.Friendships.AnyAsync(f =>
+                (f.User1Id == user1Id && f.User2Id == user2Id) ||
+                (f.User1Id == user2Id && f.User2Id == user1Id));
         }
     }
 }
