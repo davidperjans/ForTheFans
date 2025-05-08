@@ -38,7 +38,9 @@ namespace Infrastructure.Repositories
         public async Task<List<User>> SearchUsersAsync(string query, Guid excludeUserId)
         {
             return await _context.Users
-                .Where(u => (u.Username.Contains(query) || u.Email.Contains(query)) && u.Id != excludeUserId)
+                .Where(u => u.Username.Contains(query) && u.Id != excludeUserId)
+                .OrderBy(u => u.Username.StartsWith(query) ? 0 : 1)
+                .Take(5)
                 .ToListAsync();
         }
     }
