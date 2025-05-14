@@ -14,6 +14,7 @@ namespace Domain.Entities
         public string PasswordHash { get; set; }
         public string? FavoriteTeam { get; set; }
         public bool? IsPrivate { get; set; }
+        public string? Bio { get; set; }
         public string? ProfilePictureUrl { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

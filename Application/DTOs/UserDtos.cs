@@ -12,6 +12,16 @@ namespace Application.DTOs
         public string Email { get; set; }
         public string ProfilePictureUrl { get; set; }
     }
+    public class UserDetailDto
+    {
+        public Guid Id { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string? ProfilePictureUrl { get; set; }
+        public string? FavoriteTeam { get; set; }
+        public string? Bio { get; set; }
+        public bool IsPrivate { get; set; }
+    }
     public class RegisterUserDto
     {
         public string Username { get; set; }
@@ -37,6 +47,7 @@ namespace Application.DTOs
         public string? FavoriteTeam { get; set; }
         public bool? IsPrivate { get; set; }
         public string? ProfilePictureUrl { get; set; }
+        public string? Bio { get; set; }
     }
     public class ChangePasswordDto
     {
@@ -51,6 +62,7 @@ namespace Application.DTOs
         public string? FavoriteTeam { get; set; }
         public bool IsPrivate { get; set; }
         public string? ProfilePictureUrl { get; set; }
+        public string? Bio { get; set; }
     }
 
 }

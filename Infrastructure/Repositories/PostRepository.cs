@@ -65,7 +65,8 @@ namespace Infrastructure.Repositories
                 (f.User1Id == targetUserId && f.User2Id == currentUserId)
             );
 
-            bool canView = !user.IsPrivate ?? false || currentUserId == targetUserId || areFriends;
+            bool isPrivate = user.IsPrivate ?? false;
+            bool canView = !isPrivate || currentUserId == targetUserId || areFriends;
 
             var posts = await _context.Posts
                 .Where(p => p.UserId == targetUserId)
