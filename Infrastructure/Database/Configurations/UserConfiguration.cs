@@ -19,6 +19,7 @@ namespace Infrastructure.Database.Configurations
             builder.Property(u => u.Email).IsRequired().HasMaxLength(100);
             builder.Property(u => u.PasswordHash).IsRequired();
             builder.Property(u => u.FavoriteTeam).HasMaxLength(50);
+            builder.Property(u => u.Bio).HasMaxLength(500);
             builder.Property(u => u.ProfilePictureUrl).HasMaxLength(500);
 
             builder.HasMany(u => u.Posts)

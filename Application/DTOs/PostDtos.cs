@@ -20,6 +20,7 @@ namespace Application.DTOs
 
         public string Username { get; set; }
         public bool IsPrivate { get; set; }
+        public string ProfilePictureUrl { get; set; }
     }
     public class CreatePostDto
     {
