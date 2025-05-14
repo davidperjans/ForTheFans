@@ -19,7 +19,8 @@ namespace Application.MappingProfiles
                 .ForMember(dest => dest.UserId, opt => opt.Ignore());
             CreateMap<Post, PostDto>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
-                .ForMember(dest => dest.IsPrivate, opt => opt.MapFrom(src => src.User.IsPrivate));
+                .ForMember(dest => dest.IsPrivate, opt => opt.MapFrom(src => src.User.IsPrivate))
+                .ForMember(dest => dest.ProfilePictureUrl, opt => opt.MapFrom(src => src.User.ProfilePictureUrl));
         }
     }
 }

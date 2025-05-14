@@ -64,6 +64,12 @@ namespace Application.Features.UserFeatures.Commands.UpdateUserProfile
                 isModified = true;
             }
 
+            if (dto.Bio is not null && dto.Bio != user.Bio)
+            {
+                user.Bio = dto.Bio;
+                isModified = true;
+            }
+
             if (dto.ProfilePictureUrl is not null && dto.ProfilePictureUrl != user.ProfilePictureUrl)
             {
                 user.ProfilePictureUrl = dto.ProfilePictureUrl;
