@@ -4,7 +4,10 @@ using Application.Features.PostFeatures.Commands.DeletePost;
 using Application.Features.PostFeatures.Commands.UpdatePost;
 using Application.Features.PostFeatures.Queries.GetFriendsPosts;
 using Application.Features.PostFeatures.Queries.GetPostById;
+using Application.Features.PostFeatures.Queries.GetPostsByStadiumSlug;
+using Application.Features.PostFeatures.Queries.GetPostsByUser;
 using Application.Features.PostFeatures.Queries.GetUserPosts;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -69,6 +72,21 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetPostByUserId(Guid userId)
+        {
+            var currentuserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(currentuserId, out var currentUserId))
+                return Unauthorized();
+
+            var result = await _mediator.Send(new GetPostsByUserQuery(userId, currentUserId));
+
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
         [HttpGet("{postId}")]
         public async Task<IActionResult> GetPostById(Guid postId)
         {
@@ -110,6 +128,18 @@ namespace API.Controllers
 
             if (!result.IsSuccess)
                 return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpGet("stadium/slug/{slug}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetPostsByStadiumSlug(string slug)
+        {
+            var result = await _mediator.Send(new GetPostsByStadiumSlugQuery(slug));
+
+            if (!result.IsSuccess || result.Data == null || result.Data.Count == 0)
+                return NotFound(result);
 
             return Ok(result);
         }

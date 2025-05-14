@@ -19,9 +19,31 @@ namespace Infrastructure.Database.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(s => s.Location)
+            builder.Property(s => s.Slug)
                 .IsRequired()
                 .HasMaxLength(100);
+
+            builder.Property(s => s.Address)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            builder.Property(s => s.City)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(s => s.Country)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(s => s.Capacity)
+                .IsRequired();
+
+            builder.Property(s => s.Surface)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            builder.Property(s => s.ImageUrl)
+                .HasMaxLength(300);
 
             builder.HasMany(s => s.Posts)
                 .WithOne(p => p.Stadium)

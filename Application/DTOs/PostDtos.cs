@@ -16,11 +16,14 @@ namespace Application.DTOs
         public string AwayTeam { get; set; }
         public string MatchResult { get; set; }
         public DateTime CreatedAt { get; set; }
-        public Guid StadiumId { get; set; }
+        public int StadiumId { get; set; }
+
+        public string Username { get; set; }
+        public bool IsPrivate { get; set; }
     }
     public class CreatePostDto
     {
-        public Guid StadiumId { get; set; }
+        public int StadiumId { get; set; }
         public string PhotoUrl { get; set; } = string.Empty;
         public int Rating { get; set; }
         public string Comment { get; set; } = string.Empty;
@@ -36,6 +39,26 @@ namespace Application.DTOs
         public string? HomeTeam { get; set; }
         public string? AwayTeam { get; set; }
         public string? MatchResult { get; set; }
+    }
+    public class PostSummaryDto
+    {
+        public Guid Id { get; set; }
+        public string Username { get; set; }
+        public bool IsPrivate { get; set; }
+        public string PhotoUrl { get; set; }
+        public int Rating { get; set; }
+        public string Comment { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
+    public class PostWithViewPermissionDto
+    {
+        public Guid Id { get; set; }
+        public string Username { get; set; }
+        public int Rating { get; set; }
+        public string Comment { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string PhotoUrl { get; set; }
+        public bool CanView { get; set; }
     }
 
 }
