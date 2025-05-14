@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250507152559_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250513171600_AddedSlugToStadiums")]
+    partial class AddedSlugToStadiums
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -146,8 +146,8 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("StadiumId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("StadiumId")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -163,19 +163,49 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Stadium", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<string>("Location")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Surface")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -197,18 +227,21 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("FavoriteTeam")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<bool>("IsPrivate")
+                    b.Property<bool?>("IsPrivate")
                         .HasColumnType("bit");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<string>("ProfilePictureUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Username")

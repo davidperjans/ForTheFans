@@ -17,7 +17,9 @@ namespace Application.MappingProfiles
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(_ => Guid.NewGuid()))
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
                 .ForMember(dest => dest.UserId, opt => opt.Ignore());
-            CreateMap<Post, PostDto>();
+            CreateMap<Post, PostDto>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
+                .ForMember(dest => dest.IsPrivate, opt => opt.MapFrom(src => src.User.IsPrivate));
         }
     }
 }

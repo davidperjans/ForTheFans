@@ -50,6 +50,7 @@ namespace Infrastructure
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<IStadiumInfoService, StadiumInfoService>();
 
             return services;
         }

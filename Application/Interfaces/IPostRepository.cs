@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.DTOs;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace Application.Interfaces
     {
         Task<List<Post>> GetAllWithUsersAsync();
         Task<Post?> GetByIdWithUserAsync(Guid postId);
+        Task<List<PostSummaryDto>> GetPostsByStadiumSlugAsync(string slug);
+        Task<List<PostWithViewPermissionDto>> GetPostsByUserAsync(Guid targetUserId, Guid currentUserId);
     }
 }
